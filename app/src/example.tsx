@@ -22,19 +22,6 @@ type UserActionWithoutPayload = {
 
 type UserAction = UserActionWithPayload | UserActionWithoutPayload;
 
- 
-//   function userReducer(state: string, action: UserAction): string {
-//     switch (action.type) {
-//       case "LOGIN":
-//         return (action as UserActionWithPayload).username;
-//       case "LOGOUT":
-//         return "";
-//       default:
-//         throw new Error("Unknown 'user' action");
-//     }
-//   }
-
-
 const dataFetchReducer = (state:IState, action:UserAction):IState => {
     switch (action.type) {
         case 'FETCH_INIT':
