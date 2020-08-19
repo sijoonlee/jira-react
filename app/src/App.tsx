@@ -9,32 +9,30 @@ import fetch from 'node-fetch';
 // https://dev.to/elisealcala/react-context-with-usereducer-and-typescript-4obm
 
 
-
-interface IFormData {
-  boardId: string;
-  startDate: string;
-  endDate: string;
-}
 type FormData = {
-  [x: string]: any;
+    [x: string]: any;
+    // boardId?: string;
+    // startDate?: string;
+    // endDate?: string;
 }
 interface IData {
-    hits: Array<any>;
+    state: number;
+    message: string;
 }
 
 interface IState { 
     data? : IData;
-    isLoading? : Boolean;
-    isError? : Boolean;
+    isLoading? : boolean;
+    isError? : boolean;
 }
 
 type UserActionWithPayload = {
-    type: String;
+    type: string;
     payload: IData;
 }
 
 type UserActionWithoutPayload = {
-    type: String;
+    type: string;
 }
 
 type UserAction = UserActionWithPayload | UserActionWithoutPayload;
@@ -42,15 +40,16 @@ type UserAction = UserActionWithPayload | UserActionWithoutPayload;
 const dataFetchReducer = (state:IState, action:UserAction):IState => {
     switch (action.type) {
         case 'FETCH_INIT':
-        return { ...state, isLoading: true, isError: false };
+            return { ...state, isLoading: true, isError: false };
         case 'FETCH_SUCCESS':
-        return { ...state, isLoading: true, isError: false, data: (action as UserActionWithPayload).payload };
+            return { ...state, isLoading: false, isError: false, data: (action as UserActionWithPayload).payload };
         case 'FETCH_FAILURE':
-        return { ...state, isLoading: false, isError: true };
+            return { ...state, isLoading: false, isError: true };
         default:
-        throw new Error();
+            throw new Error();
     }
 };
+
 
 const useDataApi = (initialUrl:string, initialData:IData):[IState, Function] => {
     let didCancel = false;
@@ -64,18 +63,16 @@ const useDataApi = (initialUrl:string, initialData:IData):[IState, Function] => 
     });
 
     useEffect(() => {
-        let didCancel = false;
         
         const fetchData = async () => {
             dispatch({ type: 'FETCH_INIT' } as UserActionWithoutPayload);
         
             try {
-                console.log(url)
                 const response = await fetch(url);
                 const result = await response.json();
-            
+                console.log(result)
                 if (!didCancel) {
-                    dispatch({ type: 'FETCH_SUCCESS', payload: result.data } as UserActionWithPayload);
+                    dispatch({ type: 'FETCH_SUCCESS', payload: result } as UserActionWithPayload);
                 }
 
             } catch (error) {
@@ -109,34 +106,44 @@ function App() {
   const { register, handleSubmit } = useForm();
   // const [query, setQuery] = useState('redux');
   const [{ data, isLoading, isError }, doFetch] = useDataApi(
-      'https://hn.algolia.com/api/v1/search?query=redux',
-      { hits: [] },
+      'http://0.0.0.0:12345/sprint?start=2020-01-01&end=2020-03-01&boardId=93',
+      { state: 200, message:"Init" },
   );
 
+//   useEffect(async () => {
+//     const result = await axios(
+//       'https://hn.algolia.com/api/v1/search?query=redux',
+//     );
+ 
+//     setData(result.data);
+//   }, []);
+
   const onSubmit = (formData:FormData) => {
-    console.log(formData)
-    const url = formData.boardId + formData.startDate + formData.endDate
+    const url = `http://0.0.0.0:12345/sprint?start=${formData.startDate}&end=${formData.endDate}&boardId=${formData.boardId}`
     doFetch(url)
   }
+  const options = ["1", "2"]
   return (
       <Fragment>
-      <form onSubmit={handleSubmit(onSubmit)}>
-          <input name='boardId'type="text" ref={register}/>
-          <input name='startDate'type="text" ref={register}/>
-          <input name='endDate'type="text" ref={register}/>
-          <button type="submit">Submit</button>
-      </form>
+        <select name="gender" ref={register}>
+            {options.map(value => 
+                (<option key={value} value={value}>{value}</option>)
+            )}
+        </select>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <label>Board Id</label>
+            <input name='boardId'type="text" ref={register}/>
+            <label>Start Date</label>
+            <input name='startDate'type="text" ref={register}/>
+            <label>End Date</label>
+            <input name='endDate'type="text" ref={register}/>
+            <button type="submit">Submit</button>
+        </form>
 
       {isError && <div>Something went wrong ...</div>}
 
       {isLoading ? ( <div>Loading ...</div>) : (
-          <ul>
-          {data!.hits.map(item => (
-              <li key={item.objectID}>
-              <a href={item.url}>{item.title}</a>
-              </li>
-          ))}
-          </ul>
+            <div className="content" dangerouslySetInnerHTML={{__html:data!.message as string}}></div>
       )}
       </Fragment>
   );
