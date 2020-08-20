@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { useForm } from "react-hook-form";
-import './SprintBetweenPage.css';
 import { useSprintBetweenApi } from '../Components/UseApi/UseSprintBetweenApi';
 import { useBoardApi } from '../Components/UseApi/UseBoardApi';
+import { Sidebar } from '../Components/Sidebar/Sidebar'
 
 // https://www.robinwieruch.de/react-hooks-fetch-data
 // https://www.robinwieruch.de/react-usereducer-hook
@@ -95,7 +95,7 @@ function SprintBetweenPage() {
 
   return (
       <Fragment>
-
+        <Sidebar/>
         <form onSubmit={handleSubmit(onSubmit)}>
             <label>Board Id</label>
             <select name="boardId" ref={register}>

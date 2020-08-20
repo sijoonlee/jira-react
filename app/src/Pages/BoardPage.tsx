@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { useForm } from "react-hook-form";
 import { useBoardApi } from '../Components/UseApi/UseBoardApi';
+import { Sidebar } from '../Components/Sidebar/Sidebar'
+
 
 // https://www.robinwieruch.de/react-hooks-fetch-data
 // https://www.robinwieruch.de/react-usereducer-hook
@@ -48,17 +50,15 @@ function BoardPage() {
                     {row.map(column => {
                         return <td>{column}</td>
                     })}
-                </tr>
-            )
+                </tr>)
         })}
-        
     </table>
   }
 
 
   return (
       <Fragment>
-
+        <Sidebar/>
         <form onSubmit={handleSubmit(onSubmit)}>
             <label>Board Id</label>
             <input name='boardId'type="text" ref={register}/>
