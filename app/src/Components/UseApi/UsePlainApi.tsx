@@ -1,7 +1,5 @@
 import { useState, useEffect, useReducer } from 'react';
-type MessageObj = {
-    [x: string]: {[x: string]:string}
-}
+
 type ResponseFromAPI = {
     columns: Array<string>;
     index: Array<string>;
@@ -38,7 +36,7 @@ const dataFetchReducer = (state:IState, action:UserAction):IState => {
 };
 
 
-export const useBoardApi = (initialUrl:string, initialData: ResponseFromAPI):[IState, Function] => {
+export const usePlainApi = (initialUrl:string, initialData: ResponseFromAPI):[IState, Function] => {
     let didCancel = false;
 
     const [url, setUrl] = useState(initialUrl);

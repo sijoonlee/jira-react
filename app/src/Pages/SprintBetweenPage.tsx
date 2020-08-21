@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useForm } from "react-hook-form";
 import { useSprintBetweenApi } from '../Components/UseApi/UseSprintBetweenApi';
-import { useBoardApi } from '../Components/UseApi/UseBoardApi';
+import { usePlainApi } from '../Components/UseApi/UsePlainApi';
 import { Sidebar } from '../Components/Sidebar/Sidebar'
 
 // https://www.robinwieruch.de/react-hooks-fetch-data
@@ -38,7 +38,7 @@ function SprintBetweenPage() {
       {"columns":[], "index":[], "data":[]},
   );
 
-  const [ stateForBoard, _doFetchBoard] = useBoardApi(
+  const [ stateForBoard, _doFetchBoard] = usePlainApi(
     'http://0.0.0.0:12345/board',
     {"columns":[], "index":[], "data":[]},
   );

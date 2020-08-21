@@ -21,20 +21,20 @@ type ResponseFromAPI = {
     data: Array<Array<string>>;
 }
 
-function BoardPage() {
+function ProjectPage() {
   const { register, handleSubmit } = useForm();
   const [ state, doFetch] = usePlainApi(
-    'http://0.0.0.0:12345/board',
+    'http://0.0.0.0:12345/project',
       {"columns":[], "index":[], "data":[]},
   );
 
   const onSubmit = (formData:FormData) => {
     let url
-    const id = formData.boardId.trim()
+    const id = formData.projectId.trim()
     if(id.length == 0)
-      url = `http://0.0.0.0:12345/board`
+      url = `http://0.0.0.0:12345/project`
     else 
-      url = `http://0.0.0.0:12345/board?boardId=${id}`
+      url = `http://0.0.0.0:12345/project?projectId=${id}`
     doFetch(url)
   }
   
@@ -65,8 +65,8 @@ function BoardPage() {
       <Fragment>
         <Sidebar/>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <label>Board Id</label>
-            <input name='boardId'type="text" ref={register}/>
+            <label>Project Id</label>
+            <input name='projectId'type="text" ref={register}/>
             <button type="submit">Submit</button>
         </form>
 
@@ -82,4 +82,4 @@ function BoardPage() {
   );
 }
 
-export default BoardPage;
+export default ProjectPage;

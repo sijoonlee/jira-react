@@ -17,14 +17,11 @@ function ButtonLink(props:LinkProp) {
     )
 }
 
-// function HomeButton(){
-//     return ButtonLink("/")
-// }
-
 export const Sidebar = () => {
     return <div className='sidebar'>
             <ButtonLink address="/" buttonName="Home"/>
             <ButtonLink address="/board" buttonName="Board"/>
             <ButtonLink address="/sprintBetween" buttonName="Search Sprint Between Days"/>
+            <ButtonLink address="/project" buttonName="Project"/>
         </div>
 }
